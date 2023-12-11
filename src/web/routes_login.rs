@@ -13,7 +13,7 @@ pub fn routers() -> Router {
 }
 
 async fn api_login(cookies: Cookies, payload: Json<LoginPayload>) -> Result<Json<Value>> {
-    println!("->> {:<12} - api_login", "HANDLER");
+    println!("->> {:<25} - api_login", "HANDLER");
 
     //TODO: Impl read db/auth login
     if payload.username != "demo" || payload.pwd != "test" {

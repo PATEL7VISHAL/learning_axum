@@ -12,16 +12,27 @@ use std::net::SocketAddr;
 use tower_cookies::{CookieManagerLayer, Cookies};
 use tower_http::services::ServeDir;
 
+mod ctx;
 mod error;
-pub mod web;
-use error::{Error, Result};
+mod model;
+mod web;
 
 #[tokio::main]
 async fn main() {
+    // Initialise ModelController
+    let mc = model::ModelController::new().await.unwrap();
+    let routes_tickets = web::routes_tickets::routes(mc.clone())
+        .route_layer(middleware::from_fn(web::mw_auth::mw_require_auth));
+
     let routes = Router::new().merge(
         web::routes_hello::routes()
             .merge(web::routes_login::routers())
+            .nest("/api", routes_tickets)
             .layer(middleware::map_response(main_response_mapper))
+            .layer(middleware::from_fn_with_state(
+                mc.clone(),
+                web::mw_auth::mw_ctx_resolver,
+            ))
             .layer(CookieManagerLayer::new())
             .fallback_service(routes_static()),
     );
@@ -37,7 +48,7 @@ async fn main() {
 }
 
 async fn main_response_mapper(res: Response) -> Response {
-    println!("->> {:<12} - main_response_mapper", "RES_MAPPER");
+    println!("->> {:<25} - main_response_mapper", "RES_MAPPER");
     println!();
     res
 }

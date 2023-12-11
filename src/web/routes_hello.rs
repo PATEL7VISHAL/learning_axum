@@ -19,11 +19,11 @@ struct HelloParams {
 
 // regoin:: -- Handler Hello
 async fn handler_hello(Query(params): Query<HelloParams>) -> impl IntoResponse {
-    println!("->> {:<12} - handler_hello", "HANDLER");
+    println!("->> {:<20} - handler_hello", "HANDLER");
     let name = params.name.as_deref().unwrap_or("all");
     return Html(format!("Hello <strong> {name}!!! </strong>"));
 }
 async fn handler_hello2(Path(name): Path<String>) -> impl IntoResponse {
-    println!("->> {:<12} - handler_hello", "HANDLER");
+    println!("->> {:<20} - handler_hello", "HANDLER");
     return Html(format!("Hello <strong> {name}!!! </strong>"));
 }

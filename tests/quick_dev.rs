@@ -25,18 +25,32 @@ async fn quick_dev() -> Result<()> {
         .print()
         .await;
 
-    // let req_login = hc
+    let create_ticket = hc
+        .do_post(
+            "/api/tickets",
+            json!({
+                "title": "not working"
+            }),
+        )
+        .await?
+        .print()
+        .await;
+
+    // let create_ticket2 = hc
     //     .do_post(
-    //         "/api/login",
+    //         "/api/tickets",
     //         json!({
-    //         "username": "demo",
-    //         "pwd": "test"
+    //             "title": "Ticket 222 !!!"
     //         }),
     //     )
-    //     .await
-    //     .unwrap()
+    //     .await?
     //     .print()
     //     .await;
+
+    let list_ticket = hc.do_get("/api/tickets").await?.print().await;
+    let delete_ticket = hc.do_delete("/api/tickets/0").await?.print().await;
+    let delete_ticket = hc.do_delete("/api/tickets/0").await?.print().await;
+    // let delete_ticket = hc.do_delete("/api/tickets/1").await?.print().await;
 
     Ok(())
 }
