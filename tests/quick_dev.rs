@@ -12,18 +12,18 @@ async fn quick_dev() -> Result<()> {
     // hc.do_get("/Cargo.toml").await?.print().await?;
 
     // login
-    let req_login = hc
-        .do_post(
-            "/api/login",
-            json!({
-            "username": "demo",
-            "pwd": "test"
-            }),
-        )
-        .await
-        .unwrap()
-        .print()
-        .await;
+    // let req_login = hc
+    //     .do_post(
+    //         "/api/login",
+    //         json!({
+    //         "username": "demo",
+    //         "pwd": "test"
+    //         }),
+    //     )
+    //     .await
+    //     .unwrap()
+    //     .print()
+    //     .await;
 
     let create_ticket = hc
         .do_post(
