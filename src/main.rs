@@ -1,11 +1,13 @@
 #![allow(unused)]
 
+use crate::log::log_request;
 use axum::{
     extract::{Path, Query},
+    http::{Method, Uri},
     middleware,
     response::{Html, IntoResponse, Response},
     routing::{get, get_service},
-    Json, Router, http::{Uri, Method},
+    Json, Router,
 };
 use ctx::Ctx;
 use serde::Deserialize;
@@ -14,8 +16,6 @@ use std::net::SocketAddr;
 use tower_cookies::{CookieManagerLayer, Cookies};
 use tower_http::services::ServeDir;
 use uuid::Uuid;
-
-use crate::log::log_request;
 
 mod ctx;
 mod error;
@@ -54,10 +54,10 @@ async fn main() {
 }
 
 async fn main_response_mapper(
-    ctx:Option<Ctx>,
-    uri:Uri,
-    req_method:Method,
-    res: Response
+    ctx: Option<Ctx>,
+    uri: Uri,
+    req_method: Method,
+    res: Response,
 ) -> Response {
     println!("->> {:<25} - main_response_mapper", "RES_MAPPER");
     let uuid = Uuid::new_v4();
